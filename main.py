@@ -17,8 +17,7 @@ class MyOwnPDFViewer:
         self.windows.resizable(False, False)
         self.windows.config(bg='white')
 
-        # Variables
-        self.doc = None
+        self.document_size = None
 
         # Widgets
         self.toolbar_frame = Frame(self.windows, height=50, width=width, bg='#373737')
@@ -68,7 +67,7 @@ class MyOwnPDFViewer:
 
         file_pathe =filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
         if file_pathe:
-            self.doc = pymupdf.open(file_pathe)
+            self.document_size = pymupdf.open(file_pathe)
             self.page_images = []
             self.current_page = 0
             self.zoom_factor = 1.0
@@ -76,7 +75,7 @@ class MyOwnPDFViewer:
             self.page_number_label = Label(self.toolbar_frame, text="Page: 0/0", width=8, bg='#4e4e4e', fg='white')
             self.page_number_label.place(relx=0.95, rely=0.5, anchor=CENTER)
 
-            for page in self.doc:
+            for page in self.document_size:
                 pixelas = page.get_pixmap(dpi=150)
                 page_image = Image.frombytes("RGB", [pixelas.width, pixelas.height], pixelas.samples)
                 self.page_images.append(page_image)
@@ -85,7 +84,7 @@ class MyOwnPDFViewer:
 
 # ----------------------------------------------------- Display Page ---------------------------------------------------
     def show_page(self):
-        if self.doc:
+        if self.document_size:
             total = len(self.page_images)
             img = self.page_images[self.current_page]
 
@@ -105,29 +104,29 @@ class MyOwnPDFViewer:
 
 # ------------------------------------------------- Next / Previous Page -----------------------------------------------
     def next_page(self):
-        if self.doc and self.current_page < len(self.page_images) - 1:
+        if self.document_size and self.current_page < len(self.page_images) - 1:
             self.current_page += 1
             self.show_page()
 
     def prev_page(self):
-        if self.doc and self.current_page > 0:
+        if self.document_size and self.current_page > 0:
             self.current_page -= 1
             self.show_page()
 
 # ---------------------------------------------------- Zoom In / Out ---------------------------------------------------
     def zoom_in(self):
-        if self.doc:
+        if self.document_size:
             self.zoom_factor *= 1.2
             self.show_page()
 
     def zoom_out(self):
-        if self.doc:
+        if self.document_size:
             self.zoom_factor /= 1.2
             self.show_page()
 
 # ---------------------------------------------------- Resize Window ---------------------------------------------------
     def on_resize(self, event):
-        if self.doc:
+        if self.document_size:
             self.show_page()
 
 # -------------------------------------------------- Run the Program ---------------------------------------------------
