@@ -65,7 +65,7 @@ class MyOwnPDFViewer:
 # ------------------------------------------------------ Open File -----------------------------------------------------
     def open_pdf_file(self):
 
-        file_pathe =filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
+        file_pathe = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
         if file_pathe:
             self.document_size = pymupdf.open(file_pathe)
             self.page_images = []
